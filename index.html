@@ -157,6 +157,30 @@
 #bb-home .bb-ranking-open{background:linear-gradient(135deg,rgba(37,25,78,.88),rgba(15,10,43,.9));border-color:rgba(218,195,255,.48)}
 #bb-home .bb-ranking-panel{z-index:11}
 @media(max-width:760px){#bb-nickname-screen .bb-profile-card{max-height:90dvh;overflow:auto}#bb-home .bb-ranking-panel{bottom:calc(4% + 110px)}}
+
+/* SU character addition — fifth card and playful skill visual */
+.bb-character-cards{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+.bb-card-su{--card-line:#b87945;--card-glow:#b8794580;--card-top:#4b281b;--card-bottom:#17101b;}
+.bb-card-su .bb-card-type{color:#f5c08d;}
+.bb-character-board .bb-character-count{white-space:nowrap;}
+.bb-mp-character-picker{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+#bb-music.bb-practice-lobby .bb-practice-character-cards{grid-template-columns:repeat(5,minmax(0,1fr));}
+.bb-su-skill-flash{position:absolute;z-index:30;pointer-events:none;left:50%;top:32%;transform:translate(-50%,-50%) scale(.55);opacity:0;font-size:clamp(28px,5vw,58px);filter:drop-shadow(0 3px 8px #000);transition:transform .2s,opacity .2s;}
+.bb-su-skill-flash.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+@media(max-width:520px){.bb-character-cards{grid-template-columns:repeat(5,minmax(0,1fr))!important;}.bb-card-info{min-height:36%;}.bb-card-description{font-size:clamp(5px,1.35vw,7px)!important;}}
+
+#bb-home .bb-profile-level{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding:10px 12px;border:1px solid #c084fc44;border-radius:12px;background:#ffffff08;}
+#bb-home .bb-profile-level b{color:#f0abfc;font-size:16px;}#bb-home .bb-profile-level small{color:#cbbce8;font-size:10px;}
+#bb-home .bb-profile-extra-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 0 12px;}
+#bb-home .bb-profile-extra-stats div{padding:9px 5px;text-align:center;border-radius:11px;background:#ffffff09;border:1px solid #ffffff18;}
+#bb-home .bb-profile-extra-stats b{display:block;font-size:16px;color:#c4b5fd;}#bb-home .bb-profile-extra-stats span{font-size:9px;color:#cbbce8;}
+#bb-home .bb-profile-song-records{display:grid;gap:6px;margin:10px 0 16px;}
+#bb-home .bb-profile-song-record{display:grid;grid-template-columns:1fr auto;gap:4px 9px;padding:9px 10px;border:1px solid #ffffff16;border-radius:10px;background:#ffffff07;font-size:11px;}
+#bb-home .bb-profile-song-record strong{color:#f5d0fe;}#bb-home .bb-profile-song-record small{color:#bba8de;}#bb-home .bb-profile-song-record b{grid-row:1/3;grid-column:2;align-self:center;font-variant-numeric:tabular-nums;}
+#bb-home .bb-profile-nickname-row{display:grid;grid-template-columns:1fr auto;gap:6px;}#bb-home .bb-profile-nickname-row button{border:1px solid #c4b5fd55;border-radius:10px;padding:0 12px;background:#7c3aed;color:#fff;font-size:11px;font-weight:900;}
+#bb-home .bb-profile-view-mode .bb-profile-edit-fields{display:none!important;}#bb-home .bb-profile-view-mode #bb-profile-close{display:block;}
+#bb-home .bb-ranking-name{cursor:pointer;text-decoration:underline;text-decoration-color:#a78bfa55;text-underline-offset:2px;}
+
 </style>
 <style>
 /* BEAT BLOOM — user supplied four-panel art used pixel-for-pixel */
@@ -2126,7 +2150,7 @@ body.bb-playing #bb-open-audio-settings{display:none;}
 #bb-home .bb-profile-edit-actions{display:flex;gap:8px;margin-top:5px;}
 #bb-home .bb-profile-edit-actions button{flex:1;min-height:42px;border:1px solid #c4b5fd55;border-radius:11px;background:linear-gradient(110deg,#7c3aed,#c026d3);color:#fff;font-weight:900;cursor:pointer;}
 #bb-home .bb-profile-edit-actions #bb-profile-cancel{background:#ffffff12;}
-#bb-home #bb-profile-message{min-height:16px;margin:2px 0 0;color:#d8b4fe;font-size:11px;}
+#bb-home #bb-profile-message{min-height:16px;margin:2px 0 0;color:#d8b4fe;font-size:11px;} #bb-home .bb-profile-upload-hint{font-size:10px;color:#b9a8df;margin-top:-5px;} #bb-home .bb-profile-edit-fields input[type=file]{width:100%;padding:9px;border:1px dashed #c4b5fd66;border-radius:10px;background:#ffffff0b;color:#e9ddff;font-size:11px;} #bb-home .bb-profile-edit-fields input[type=file]::file-selector-button{margin-right:10px;padding:7px 10px;border:0;border-radius:8px;background:#7c3aed;color:#fff;font-weight:800;cursor:pointer;}
 @media(max-width:600px){#bb-home .bb-profile-panel{padding:15px;border-radius:18px;}#bb-home .bb-profile-banner{height:90px;}}
 
 </style>
@@ -2176,15 +2200,24 @@ body.bb-playing #bb-open-audio-settings{display:none;}
       <section id="bb-profile-panel" class="bb-profile-panel" hidden aria-label="내 플레이어 프로필">
         <div class="bb-profile-panel-head"><div><small>BEAT BLOOM · PLAYER CARD</small><h2>MY PROFILE</h2></div><button id="bb-profile-close" type="button" aria-label="프로필 닫기">×</button></div>
         <div class="bb-profile-banner" id="bb-profile-banner"><div class="bb-profile-avatar-wrap"><img id="bb-profile-avatar" src="a/31.png" alt="프로필 아바타"></div></div>
-        <div class="bb-profile-identity"><strong id="bb-profile-name">PLAYER</strong><span id="bb-profile-status-view">나만의 리듬을 기록하는 중 ♫</span></div>
-        <div class="bb-profile-stats"><div><b id="bb-profile-record-count">0</b><span>등록 기록</span></div><div><b id="bb-profile-best-score">0</b><span>최고 점수</span></div><div><b id="bb-profile-best-combo">0</b><span>최대 콤보</span></div></div>
+        <div class="bb-profile-identity" id="bb-profile-identity"><strong id="bb-profile-name">PLAYER</strong><span id="bb-profile-status-view">나만의 리듬을 기록하는 중 ♫</span></div>
+        <div class="bb-profile-level"><b id="bb-profile-level">LV. 1</b><small id="bb-profile-level-progress">0 / 5 플레이 · 다음 레벨까지</small></div>
+        <div class="bb-profile-stats"><div><b id="bb-profile-record-count">0</b><span>곡별 기록</span></div><div><b id="bb-profile-best-score">0</b><span>최고 점수</span></div><div><b id="bb-profile-best-combo">0</b><span>최대 콤보</span></div></div>
+        <div class="bb-profile-extra-stats"><div><b id="bb-profile-plays">0</b><span>플레이</span></div><div><b id="bb-profile-wins">0</b><span>승리</span></div><div><b id="bb-profile-losses">0</b><span>패배</span></div><div><b id="bb-profile-draws">0</b><span>무승부</span></div></div><p id="bb-profile-win-rate" style="color:#cbbce8;font-size:10px;margin:0 0 12px">승률 0%</p>
+        <h3 class="bb-profile-record-heading">곡별 최고 기록</h3><div id="bb-profile-song-records" class="bb-profile-song-records"></div>
         <div class="bb-profile-edit-fields">
-          <label for="bb-profile-avatar-url">프로필 이미지 주소</label><input id="bb-profile-avatar-url" type="url" maxlength="500" placeholder="https://...">
-          <label for="bb-profile-banner-url">배너 이미지 주소</label><input id="bb-profile-banner-url" type="url" maxlength="500" placeholder="https://...">
+          <label for="bb-profile-avatar-file">프로필 이미지</label><input id="bb-profile-avatar-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+          <small class="bb-profile-upload-hint">PNG, JPG, WEBP, GIF · 최대 5MB</small>
+          <label for="bb-profile-banner-file">배너 이미지</label><input id="bb-profile-banner-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+          <small class="bb-profile-upload-hint">PNG, JPG, WEBP, GIF · 최대 5MB</small>
+          <input id="bb-profile-avatar-url" type="url" maxlength="500" placeholder="프로필 이미지 URL (선택)" aria-label="프로필 이미지 URL">
+          <input id="bb-profile-banner-url" type="url" maxlength="500" placeholder="배너 이미지 URL (선택)" aria-label="배너 이미지 URL">
+          <label for="bb-profile-nickname">닉네임 변경</label><div class="bb-profile-nickname-row"><input id="bb-profile-nickname" type="text" maxlength="16" placeholder="새 닉네임"><button id="bb-profile-nickname-save" type="button">변경</button></div>
+          <small class="bb-profile-upload-hint">변경하면 다음 로그인부터 새 닉네임으로 접속합니다. 기존 비밀번호는 그대로 유지돼요.</small>
           <label for="bb-profile-status">상태 메시지</label><input id="bb-profile-status" type="text" maxlength="60" placeholder="오늘도 즐겁게 플레이!">
           <label for="bb-profile-bio">자기소개</label><textarea id="bb-profile-bio" maxlength="240" rows="3" placeholder="나를 소개해 보세요."></textarea>
-          <label for="bb-profile-visibility">프로필 공개 범위</label><select id="bb-profile-visibility"><option value="public">전체 공개</option><option value="friends">친구 공개 (친구 기능 연결 예정)</option><option value="private">비공개</option></select>
-          <p class="bb-profile-nickname-note">닉네임 변경은 기존 닉네임 로그인과 연결되어 있어, 로그인 정보까지 안전하게 바꾸는 기능을 별도로 연결한 뒤 제공할게요.</p>
+          <label for="bb-profile-visibility">프로필 공개 범위</label><select id="bb-profile-visibility"><option value="public">전체 공개</option><option value="friends" disabled>친구 공개 (친구 기능 추후 지원)</option><option value="private">비공개</option></select>
+          <p class="bb-profile-nickname-note">닉네임 변경은 로그인 계정도 함께 업데이트됩니다. 변경 후 새 닉네임으로 로그인해 주세요.</p>
           <div class="bb-profile-edit-actions"><button id="bb-profile-save" type="button">변경사항 저장</button><button id="bb-profile-cancel" type="button">닫기</button></div>
           <p id="bb-profile-message" role="status" aria-live="polite"></p>
         </div>
@@ -2330,6 +2363,7 @@ body.bb-playing #bb-open-audio-settings{display:none;}
             <button type="button" data-mp-character="rage" aria-label="프란 선택"><img src="a/69.webp" alt=""><span>프란</span></button>
             <button type="button" data-mp-character="gugu" aria-label="구구 선택"><img src="a/gugu_fullbody.webp" alt=""><span>구구</span></button>
             <button type="button" data-mp-character="veil" aria-label="스트 선택"><img src="a/67.webp" alt=""><span>스트</span></button>
+            <button type="button" data-mp-character="su" aria-label="수 선택"><img src="a/su_character.webp" alt=""><span>수</span></button>
           </div>
           <button id="bb-mp-ready" class="bb-mp-ready-button" type="button">준비하기</button>
         </div>
@@ -2428,7 +2462,7 @@ body.bb-playing #bb-open-audio-settings{display:none;}
           <strong>CHARACTER SELECT <span>✿</span></strong>
           <small>CHOOSE YOUR RHYTHM</small>
         </div>
-        <div class="bb-character-count">4 PLAY STYLES</div>
+        <div class="bb-character-count">5 PLAY STYLES</div>
       </header>
       <div class="bb-character-cards">
         <button class="bb-character-card bb-card-ice" id="bb-char-ice" type="button" aria-label="제갱 ICE 선택">
@@ -2466,6 +2500,11 @@ body.bb-playing #bb-open-audio-settings{display:none;}
             <span class="bb-card-type">VEIL · 시야 교란</span>
             <span class="bb-card-description">랜덤 상대의 노트를<br>잠시 흐릿하게 만듭니다.</span>
           </span>
+        </button>
+        <button class="bb-character-card bb-card-su" id="bb-char-su" type="button" aria-label="수 SU 선택">
+          <span class="bb-card-spark">💩</span>
+          <span class="bb-card-art"><img src="a/su_character.webp" alt="수 캐릭터 일러스트"></span>
+          <span class="bb-card-info"><strong class="bb-card-name">수</strong><span class="bb-card-type">TROLL · 똥 투척</span><span class="bb-card-description">랜덤 상대 노트 3개에<br>똥 스티커를 붙입니다.</span></span>
         </button>
       </div>
       <div class="bb-character-footer">SELECT A CHARACTER TO CONTINUE <span>✧ BEAT BLOOM ✧</span></div>
@@ -2528,6 +2567,9 @@ body.bb-playing #bb-open-audio-settings{display:none;}
               </button>
               <button class="bb-practice-character-card" type="button" data-practice-player-char="veil" aria-pressed="false">
                 <img src="a/67.webp" alt="스트 캐릭터 일러스트" loading="lazy"><span class="bb-practice-character-name"><b>스트</b><small>VEIL</small></span><i>✓</i>
+              </button>
+              <button class="bb-practice-character-card" type="button" data-practice-player-char="su" aria-pressed="false">
+                <img src="a/su_character.webp" alt="수 캐릭터 일러스트" loading="lazy"><span class="bb-practice-character-name"><b>수</b><small>💩 TROLL</small></span><i>✓</i>
               </button>
             </div>
           </section>
@@ -2939,8 +2981,11 @@ body.bb-playing #bb-open-audio-settings{display:none;}
             ice: 'a/68.webp',
             rage: 'a/69.webp',
             gugu: 'a/gugu_fullbody.webp',
-            veil: 'a/67.webp'
+            veil: 'a/67.webp',
+            su: 'a/su_character.webp'
         };
+
+        const suPoopImage=new Image();suPoopImage.src='a/su_poop.webp';
 
         const CHARACTER_DATA = {
             ice: {
@@ -2975,6 +3020,14 @@ body.bb-playing #bb-open-audio-settings{display:none;}
                 quoteCombo: '시선이 흔들리고 있잖아.',
                 quoteHit: ['눈 좀 똑바로 떠봐~', '시야가 흐려졌나 보네.'],
                 imgUrl: CHAR_IMAGES.veil
+            },
+            su: {
+                name: '수',
+                skillName: '💩 똥 투척',
+                quoteIdle: '아… 귀찮아.',
+                quoteCombo: '이 정도는 누워서도 하지.',
+                quoteHit: ['뭐야… 내 화면에 뭐 묻었어?', '아 진짜 더럽네…'],
+                imgUrl: CHAR_IMAGES.su
             }
         };
 
@@ -4492,7 +4545,7 @@ body.bb-playing #bb-open-audio-settings{display:none;}
                             drawStageSideRhythm(playerCtx,pW,pH,elapsedSongSeconds);
                             drawPrismRailMotion(playerCtx,pW,pH,elapsedSongSeconds);
                             for (const lane of heldLanes) drawLanePressGlow(playerCtx,pW,pH,lane,.88);
-                            for (const note of playerNotes) if (!note.hit || note.holding) drawPerspectiveNote(playerCtx, pW, pH, note, '#f472d0');
+                            for (const note of playerNotes) if (!note.hit || note.holding) { drawPerspectiveNote(playerCtx, pW, pH, note, '#f472d0'); if(note.suPoopedUntil>elapsedSongSeconds){const laneInfo=laneAt(note.y);const size=Math.max(22,Math.min(58,getNoteVisualHeight(pW,'percussion')*1.05));const alpha=Math.min(1,(note.suPoopedUntil-elapsedSongSeconds)/.25);playerCtx.save();playerCtx.globalAlpha=alpha;playerCtx.drawImage(suPoopImage,laneInfo.center-size/2,note.y-size/2,size,size);playerCtx.restore();}}
                             for (let i = hitEffects.length - 1; i >= 0; i--) {
                                 const eff = hitEffects[i];
                                 eff.alpha -= 3.35 * (renderInterval / 1000);
@@ -4646,6 +4699,15 @@ body.bb-playing #bb-open-audio-settings{display:none;}
                         }));
                         return;
                     }
+                    if (character === 'su') {
+                        const eligible = playerNotes.filter(note => !note.hit && !note.holding && (note.suPoopedUntil||0) <= elapsedSongSeconds);
+                        for (let i=eligible.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[eligible[i],eligible[j]]=[eligible[j],eligible[i]];}
+                        eligible.slice(0,Math.min(3,eligible.length)).forEach(note=>{note.suPoopedUntil=elapsedSongSeconds+2.0;note.suPoopStart=elapsedSongSeconds;});
+                        triggerChibiAnim('player-avatar-box','chibi-hit');
+                        const speech=document.getElementById('player-speech');if(speech)speech.textContent=`${senderName||'상대'}: 아… 똥이다.`;
+                        document.dispatchEvent(new CustomEvent('bb:skill-feedback',{detail:{text:'💩 수의 똥 투척! 랜덤 노트 3개가 잠시 가려집니다.'}}));
+                        return;
+                    }
                     if (character === 'veil') {
                         visionDebuffTimer = Math.max(visionDebuffTimer, 4.2);
                         triggerChibiAnim('player-avatar-box', 'chibi-hit');
@@ -4744,7 +4806,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    }
    rankingList.innerHTML=records.map((row,i)=>{
     const nickname=String(profileMap[row.user_id]||'PLAYER').replace(/[<>]/g,'');
-    return `<div class="bb-ranking-row"><div class="bb-ranking-player"><span class="bb-ranking-place">${i+1}</span><span class="bb-ranking-name">${nickname}</span></div><span class="bb-ranking-value">${Number(row.score).toLocaleString('en-US')}</span><span class="bb-ranking-value">${Number(row.accuracy).toFixed(1)}%</span><span class="bb-ranking-value">${Number(row.max_combo).toLocaleString('en-US')}</span></div>`;
+    return `<div class="bb-ranking-row"><div class="bb-ranking-player"><span class="bb-ranking-place">${i+1}</span><span class="bb-ranking-name" role="button" tabindex="0" data-bb-profile-user="${row.user_id}" data-bb-profile-name="${nickname.replace(/"/g,'&quot;')}">${nickname}</span></div><span class="bb-ranking-value">${Number(row.score).toLocaleString('en-US')}</span><span class="bb-ranking-value">${Number(row.accuracy).toFixed(1)}%</span><span class="bb-ranking-value">${Number(row.max_combo).toLocaleString('en-US')}</span></div>`;
    }).join('');
   }catch(error){
    console.error('BeatBloom ranking load failed:',error);
@@ -4752,19 +4814,89 @@ document.addEventListener('DOMContentLoaded',()=>{
    rankingList.innerHTML=`<div class="bb-ranking-empty"><b>!</b><strong>랭킹을 불러오지 못했어요</strong><span>${detail.replace(/[<>]/g,'')||'Supabase 테이블 및 접근 권한을 확인해 주세요.'}</span></div>`;
   }
  }
+ rankingList?.addEventListener('click',event=>{const target=event.target.closest('[data-bb-profile-user]');if(target)bbOpenPlayerProfile(target.dataset.bbProfileUser,target.dataset.bbProfileName||'PLAYER');});
+ rankingList?.addEventListener('keydown',event=>{const target=event.target.closest('[data-bb-profile-user]');if(target&&(event.key==='Enter'||event.key===' ')){event.preventDefault();bbOpenPlayerProfile(target.dataset.bbProfileUser,target.dataset.bbProfileName||'PLAYER');}});
  async function bbSubmitTrackRecord(result){
   if(!bbSupabase||!bbUser||!result)return;
   const payload={p_track_id:Number(selectedSong),p_score:Math.max(0,Math.floor(Number(result.score)||0)),p_accuracy:Math.max(0,Math.min(100,Number(result.accuracy)||0)),p_max_combo:Math.max(0,Math.floor(Number(result.maxCombo??result.combo)||0))};
   const {error}=await bbSupabase.rpc('bb_submit_track_record',payload);if(error)console.warn('Track ranking save failed',error);else if(rankingPanel&&!rankingPanel.hidden)bbLoadRanking();
+  try{await bbRecordPlayerStats(result);}catch(error){console.warn('Player statistics update failed',error);}
  }
 
  // Self profile: public profile data is stored on the existing bb_profiles row.
  const profilePanel=$('bb-profile-panel');
  function bbProfileMessage(message,isError=false){const el=$('bb-profile-message');if(el){el.textContent=message;el.style.color=isError?'#fda4af':'#d8b4fe';}}
  function bbSafeImageUrl(value){const v=String(value||'').trim();return /^https?:\/\//i.test(v)?v:'';}
+ const BB_PROFILE_BUCKET='profile-images';
+ async function bbUploadProfileImage(file,kind){
+  if(!bbSupabase||!bbUser)throw new Error('로그인이 필요해요.');
+  if(!file)return;
+  const allowed=['image/png','image/jpeg','image/webp','image/gif'];
+  if(!allowed.includes(file.type))throw new Error('PNG, JPG, WEBP, GIF 이미지 파일만 업로드할 수 있어요.');
+  if(file.size>5*1024*1024)throw new Error('이미지는 5MB 이하로 선택해 주세요.');
+  const ext=({ 'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'})[file.type];
+  const path=`${bbUser.id}/${kind}-${Date.now()}.${ext}`;
+  bbProfileMessage(kind==='avatar'?'프로필 이미지 업로드 중...':'배너 이미지 업로드 중...');
+  const {error}=await bbSupabase.storage.from(BB_PROFILE_BUCKET).upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});
+  if(error)throw error;
+  const {data}=bbSupabase.storage.from(BB_PROFILE_BUCKET).getPublicUrl(path);
+  const url=bbSafeImageUrl(data?.publicUrl);
+  if(!url)throw new Error('업로드 주소를 가져오지 못했어요.');
+  if(kind==='avatar'){$('bb-profile-avatar-url').value=url;$('bb-profile-avatar').src=url;}
+  else{$('bb-profile-banner-url').value=url;$('bb-profile-banner').style.backgroundImage=`linear-gradient(90deg,rgba(20,10,55,.15),rgba(20,10,55,.15)),url(${JSON.stringify(url)})`;}
+  bbProfileMessage('이미지 업로드 완료! 마지막으로 변경사항 저장을 눌러주세요.');
+ }
+ $('bb-profile-avatar-file')?.addEventListener('change',async e=>{try{await bbUploadProfileImage(e.target.files?.[0],'avatar');}catch(error){console.error('Avatar upload failed:',error);bbProfileMessage(String(error?.message||'프로필 이미지 업로드에 실패했어요.'),true);}finally{e.target.value='';}});
+ $('bb-profile-banner-file')?.addEventListener('change',async e=>{try{await bbUploadProfileImage(e.target.files?.[0],'banner');}catch(error){console.error('Banner upload failed:',error);bbProfileMessage(String(error?.message||'배너 이미지 업로드에 실패했어요.'),true);}finally{e.target.value='';}});
+ async function bbRecordPlayerStats(result){
+  if(!bbSupabase||!bbUser)return;
+  let matchResult='practice';
+  if(playMode==='multi'){
+   const roster=getResultEntries(result||{});const mine=roster.find(r=>r.isLocal);const top=Math.max(0,...roster.map(r=>Number(r.score)||0));
+   const topCount=roster.filter(r=>(Number(r.score)||0)===top).length;
+   matchResult=Number(mine?.score||0)===top?(topCount>1?'draw':'win'):'loss';
+  }
+  const {error}=await bbSupabase.rpc('bb_record_player_stats',{p_result:matchResult});if(error)throw error;
+ }
+ function bbLevelFromPlays(plays){return Math.max(1,1+Math.floor(Math.max(0,plays)/5));}
+ function bbRenderProfileStats(records,stats){
+  const rows=records||[],plays=Number(stats?.total_plays)||0,level=bbLevelFromPlays(plays),toNext=plays%5;
+  $('bb-profile-record-count').textContent=rows.length.toLocaleString('en-US');
+  $('bb-profile-best-score').textContent=rows.reduce((m,r)=>Math.max(m,Number(r.score)||0),0).toLocaleString('en-US');
+  $('bb-profile-best-combo').textContent=rows.reduce((m,r)=>Math.max(m,Number(r.max_combo)||0),0).toLocaleString('en-US');
+  $('bb-profile-level').textContent=`LV. ${level}`;$('bb-profile-level-progress').textContent=`${toNext} / 5 플레이 · 다음 레벨까지`;
+  $('bb-profile-plays').textContent=plays.toLocaleString('en-US');const wins=Number(stats?.wins)||0,losses=Number(stats?.losses)||0,draws=Number(stats?.draws)||0;$('bb-profile-wins').textContent=wins.toLocaleString('en-US');$('bb-profile-losses').textContent=losses.toLocaleString('en-US');$('bb-profile-draws').textContent=draws.toLocaleString('en-US');$('bb-profile-win-rate').textContent=`승률 ${plays?Math.round(wins/Math.max(1,wins+losses+draws)*100):0}%`;
+  const songEl=$('bb-profile-song-records');
+  if(songEl){const sorted=rows.slice().sort((a,b)=>Number(b.score)-Number(a.score));songEl.innerHTML=sorted.map(r=>{const track=music[Number(r.track_id)]?.name||`STAGE ${Number(r.track_id)+1}`;return `<div class="bb-profile-song-record"><strong>${String(track).replace(/[<>]/g,'')}</strong><small>${Number(r.accuracy||0).toFixed(1)}% · ${Number(r.max_combo||0).toLocaleString('en-US')} COMBO</small><b>${Number(r.score||0).toLocaleString('en-US')}</b></div>`;}).join('')||'<div class="bb-ranking-empty">아직 곡별 기록이 없습니다. 플레이를 시작해 보세요!</div>';}
+ }
+ async function bbLoadProfileStats(userId){
+  const [recordsResult,statsResult]=await Promise.all([
+   bbSupabase.from('bb_track_records').select('track_id,score,accuracy,max_combo').eq('user_id',userId),
+   bbSupabase.from('bb_player_stats').select('total_plays,wins,losses,draws').eq('user_id',userId).maybeSingle()
+  ]);
+  if(recordsResult.error)throw recordsResult.error;if(statsResult.error)throw statsResult.error;
+  bbRenderProfileStats(recordsResult.data||[],statsResult.data||{});
+ }
+ async function bbOpenPlayerProfile(userId,nickname){
+  if(!bbSupabase||!userId)return;profilePanel.hidden=false;profilePanel.classList.add('bb-profile-view-mode');bbProfileMessage('플레이어 프로필을 불러오는 중...');
+  const edit=profilePanel.querySelector('.bb-profile-edit-fields');if(edit)edit.style.display='none';
+  try{
+   const {data,error}=await bbSupabase.from('bb_profiles').select('nickname,avatar_url,banner_url,bio,status_message,profile_visibility').eq('id',userId).maybeSingle();if(error)throw error;if(!data){bbProfileMessage('비공개 프로필이거나 존재하지 않는 플레이어입니다.',true);return;}
+   $('bb-profile-name').textContent=data.nickname||nickname;$('bb-profile-status-view').textContent=data.status_message||'BeatBloom 플레이어';$('bb-profile-avatar').src=bbSafeImageUrl(data.avatar_url)||'a/31.png';$('bb-profile-banner').style.backgroundImage=bbSafeImageUrl(data.banner_url)?`linear-gradient(90deg,rgba(20,10,55,.15),rgba(20,10,55,.15)),url(${JSON.stringify(bbSafeImageUrl(data.banner_url))})`:'';
+   const bio=data.bio||'아직 자기소개가 없습니다.';let bioNode=$('bb-profile-public-bio');if(!bioNode){bioNode=document.createElement('p');bioNode.id='bb-profile-public-bio';bioNode.style.cssText='color:#d8c9f4;font-size:12px;white-space:pre-wrap;margin:8px 4px 14px';$('bb-profile-identity').after(bioNode);}bioNode.textContent=bio;await bbLoadProfileStats(userId);bbProfileMessage('플레이어 프로필');
+  }catch(error){console.error('Public profile load failed:',error);bbProfileMessage(String(error?.message||'프로필을 불러오지 못했어요.'),true);}
+ }
+ async function bbRenameNickname(){
+  if(!bbSupabase||!bbUser)return;const input=$('bb-profile-nickname'),value=String(input?.value||'').trim().normalize('NFKC').replace(/[<>]/g,'');
+  if(!/^[\p{L}\p{N}_-]{2,16}$/u.test(value)){bbProfileMessage('닉네임은 한글·영문·숫자·밑줄·하이픈 2~16자로 입력해 주세요.',true);return;}
+  if(value===playerNickname){bbProfileMessage('현재 닉네임과 같아요.');return;}
+  const btn=$('bb-profile-nickname-save');btn.disabled=true;bbProfileMessage('닉네임 변경 중...');
+  try{const {error}=await bbSupabase.rpc('bb_rename_nickname',{p_new_nickname:value});if(error)throw error;playerNickname=value;localStorage.setItem('beatBloomNickname',value);$('bb-home-nickname').textContent=value;$('bb-profile-name').textContent=value;input.value='';bbProfileMessage('닉네임 변경 완료! 다음 로그인부터 새 닉네임을 사용하세요.');toast('닉네임을 변경했어요!');}
+  catch(error){console.error('Nickname rename failed',error);bbProfileMessage(/duplicate|already exists|unique/i.test(String(error.message))?'이미 사용 중인 닉네임이에요.':String(error.message||'닉네임 변경에 실패했어요.'),true);}finally{btn.disabled=false;}
+ }
  async function bbOpenOwnProfile(){
   if(!bbSupabase||!bbUser){toast('로그인한 계정이 필요해요.');return;}
-  profilePanel.hidden=false;bbProfileMessage('프로필을 불러오는 중...');
+  profilePanel.hidden=false;profilePanel.classList.remove('bb-profile-view-mode');const oldBio=$('bb-profile-public-bio');if(oldBio)oldBio.remove();bbProfileMessage('프로필을 불러오는 중...');
   try{
    const {data:profile,error}=await bbSupabase.from('bb_profiles').select('nickname,avatar_url,banner_url,bio,status_message,profile_visibility').eq('id',bbUser.id).maybeSingle();
    if(error)throw error;
@@ -4775,12 +4907,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    $('bb-profile-status').value=p.status_message||'';$('bb-profile-bio').value=p.bio||'';$('bb-profile-visibility').value=p.profile_visibility||'public';
    $('bb-profile-avatar').src=bbSafeImageUrl(p.avatar_url)||'a/31.png';
    $('bb-profile-banner').style.backgroundImage=bbSafeImageUrl(p.banner_url)?`linear-gradient(90deg,rgba(20,10,55,.15),rgba(20,10,55,.15)),url(${JSON.stringify(bbSafeImageUrl(p.banner_url))})`:'';
-   const {data:records,error:recordError}=await bbSupabase.from('bb_track_records').select('score,max_combo').eq('user_id',bbUser.id);
-   if(recordError)throw recordError;
-   const rows=records||[];
-   $('bb-profile-record-count').textContent=rows.length.toLocaleString('en-US');
-   $('bb-profile-best-score').textContent=rows.reduce((m,r)=>Math.max(m,Number(r.score)||0),0).toLocaleString('en-US');
-   $('bb-profile-best-combo').textContent=rows.reduce((m,r)=>Math.max(m,Number(r.max_combo)||0),0).toLocaleString('en-US');
+   profilePanel.classList.remove('bb-profile-view-mode');const bioNode=$('bb-profile-public-bio');if(bioNode)bioNode.remove();const edit=profilePanel.querySelector('.bb-profile-edit-fields');if(edit)edit.style.display='';$('bb-profile-nickname').value=p.nickname||playerNickname;await bbLoadProfileStats(bbUser.id);
    bbProfileMessage('내 프로필을 수정할 수 있어요.');
   }catch(error){console.error('Profile load failed:',error);bbProfileMessage(String(error?.message||'프로필을 불러오지 못했어요.'),true);}
  }
@@ -4801,7 +4928,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  $('bb-open-profile')?.addEventListener('click',bbOpenOwnProfile);
  $('bb-profile-close')?.addEventListener('click',()=>{profilePanel.hidden=true;});
  $('bb-profile-cancel')?.addEventListener('click',()=>{profilePanel.hidden=true;});
- $('bb-profile-save')?.addEventListener('click',bbSaveOwnProfile);
+ $('bb-profile-save')?.addEventListener('click',bbSaveOwnProfile);$('bb-profile-nickname-save')?.addEventListener('click',bbRenameNickname);$('bb-profile-nickname')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();bbRenameNickname();}});
  $('bb-profile-avatar-url')?.addEventListener('change',()=>{$('bb-profile-avatar').src=bbSafeImageUrl($('bb-profile-avatar-url').value)||'a/31.png';});
  $('bb-profile-banner-url')?.addEventListener('change',()=>{const u=bbSafeImageUrl($('bb-profile-banner-url').value);$('bb-profile-banner').style.backgroundImage=u?`url(${JSON.stringify(u)})`:'';});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&profilePanel&&!profilePanel.hidden)profilePanel.hidden=true;if(e.key==='Escape'&&rankingPanel&&!rankingPanel.hidden){rankingPanel.hidden=true;rankingPanel.setAttribute('aria-hidden','true');}});
@@ -5079,7 +5206,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  }
  window.BeatBloomAudio={playClick,playHit:playHitSfx,playFeverCue,playMenuBgm,playTrack:playSelectedTrack,stopTrack,getBpm(){return music[selectedSong]?.bpm||120;},getTrackTime(){return (!trackPlayer.paused&&Number.isFinite(trackPlayer.currentTime))?trackPlayer.currentTime:null;},pauseTrack(paused){if(paused)trackPlayer.pause();else playMedia(trackPlayer,'게임 트랙');}};
  updateAudioButtons(false);
- const charName=key=>key==='ice'?'제갱':key==='rage'?'프란':key==='gugu'?'구구':key==='veil'?'스트':'제갱';
+ const charName=key=>key==='ice'?'제갱':key==='rage'?'프란':key==='gugu'?'구구':key==='veil'?'스트':key==='su'?'수':'제갱';
  const peerRoomId=code=>'beatbloom-'+code;
  const PEER_SERVER_CONFIG=window.BEAT_BLOOM_PEER_SERVER_CONFIG||{host:'beat-bloom-multiplayer.onrender.com',port:443,path:'/peerjs',secure:true};
  function peerServerConfigured(){return !!PEER_SERVER_CONFIG.host&&!String(PEER_SERVER_CONFIG.host).includes('YOUR-RENDER-SERVICE');}
@@ -5265,7 +5392,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   for(let i=0;i<4;i++){
    const p=players[i],meta=$('bb-slot-meta-'+i),avatar=$('bb-slot-avatar-'+i),name=$('bb-slot-name-'+i),state=$('bb-slot-state-'+i);
    meta.hidden=false;meta.classList.toggle('occupied',!!p);meta.classList.toggle('is-ready',!!p?.ready);meta.classList.toggle('is-waiting',!!p&&!p.ready);avatar.hidden=!p;name.hidden=!p;
-   if(p){avatar.src=CHAR_IMAGES[['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice'];avatar.alt=charName(p.character)+' 캐릭터';name.textContent=`${String(p.name||'PLAYER').slice(0,16)}${p.host?' · HOST':''}`;state.textContent=`${charName(p.character)} · ${p.ready?'READY':'WAITING'}`;state.style.color=p.ready?'#86efac':'#c4b5fd';}
+   if(p){avatar.src=CHAR_IMAGES[['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice'];avatar.alt=charName(p.character)+' 캐릭터';name.textContent=`${String(p.name||'PLAYER').slice(0,16)}${p.host?' · HOST':''}`;state.textContent=`${charName(p.character)} · ${p.ready?'READY':'WAITING'}`;state.style.color=p.ready?'#86efac':'#c4b5fd';}
    else{avatar.removeAttribute('src');name.textContent='';state.textContent='PLAYER WAITING';state.style.color='#9b8bc8';}
   }
   const local=localPlayer();
@@ -5289,8 +5416,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    showSkillSplash('gugu','점수는 내가 다 가져갈게~');
    return;
   }
-  if(character!=='ice'&&character!=='rage'&&character!=='veil')return;
-  showSkillSplash(character,character==='veil'?'눈 좀 똑바로 떠봐~':null);
+  if(character!=='ice'&&character!=='rage'&&character!=='veil'&&character!=='su')return;
+  showSkillSplash(character,character==='veil'?'눈 좀 똑바로 떠봐~':(character==='su'?'아… 받아라.':null));
   window.BeatBloomGame?.receiveSkill?.(character,packet?.fromName);
  }
  let skillSplashTimer=null;
@@ -5379,16 +5506,16 @@ document.addEventListener('DOMContentLoaded',()=>{
   playCharacterSkillSfx(character);
   const layer=$('bb-skill-splash'),image=$('bb-skill-splash-image');
   if(!layer||!image)return;
-  const key=['ice','rage','gugu','veil'].includes(character)?character:'ice';
+  const key=['ice','rage','gugu','veil','su'].includes(character)?character:'ice';
   const splashImages={
    ice:'a/30.webp',
    rage:'a/34.webp',
    gugu:'a/gugu_fullbody.webp',
-   veil:'a/67.webp'
+   veil:'a/67.webp',su:'a/su_character.webp'
   };
   image.src=splashImages[key];
   const line=$('bb-skill-splash-line');
-  if(line) line.textContent=dialogue|| (key==='ice'?'발걸음이 꽤 무겁겠는걸.':(key==='rage'?'자, 더 빠르게 달려보자!':(key==='veil'?'눈 좀 똑바로 떠봐~':'점수는 내가 다 가져갈게~')));
+  if(line) line.textContent=dialogue|| (key==='ice'?'발걸음이 꽤 무겁겠는걸.':(key==='rage'?'자, 더 빠르게 달려보자!':(key==='veil'?'눈 좀 똑바로 떠봐~':(key==='su'?'아… 받아라.':'점수는 내가 다 가져갈게~'))));
   layer.dataset.skill=key;
   layer.classList.remove('show');void layer.offsetWidth;layer.classList.add('show');
   clearTimeout(skillSplashTimer);
@@ -5410,7 +5537,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const target=targets[Math.floor(Math.random()*targets.length)];
   if(playMode==='practice'&&target.bot){
    const bot=botStates.find(b=>b.id===target.id);
-   if(bot){bot.penaltyBeats=Math.max(bot.penaltyBeats,4);bot.penaltyType=selectedChar==='rage'?'rage':(selectedChar==='veil'?'veil':'ice');}
+   if(bot){bot.penaltyBeats=Math.max(bot.penaltyBeats,4);bot.penaltyType=selectedChar==='rage'?'rage':(selectedChar==='veil'?'veil':(selectedChar==='su'?'su':'ice'));}
    window.BeatBloomGame?.confirmSkillCast?.();
    if(selectedChar==='veil')showSkillSplash('veil','눈 좀 똑바로 떠봐~');
    showSkillFeedback('⚡ '+target.name+'에게 명중');
@@ -5435,7 +5562,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(selectedDifficulty==='hard')return;
   if(!isHost||!peer)return;
   if(packet.character==='gugu'){broadcast({type:'skill-hit',character:'gugu',fromName:String(packet.fromName||'구구').slice(0,16)});return;}
-  if(packet.character!=='ice'&&packet.character!=='rage'&&packet.character!=='veil')return;
+  if(packet.character!=='ice'&&packet.character!=='rage'&&packet.character!=='veil'&&packet.character!=='su')return;
   const targetId=String(packet.targetId||'');
   if(targetId!==peer.id&&!players.some(p=>p.id===targetId))return;
   if(targetId===peer.id){applyIncomingSkill({character:packet.character,fromName:packet.fromName});return;}
@@ -5453,7 +5580,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  }
  function roomChatSafePayload(packet){
   if(!packet||packet.type!=='room-chat')return null;
-  const character=['ice','rage','gugu','veil'].includes(packet.character)?packet.character:'ice';
+  const character=['ice','rage','gugu','veil','su'].includes(packet.character)?packet.character:'ice';
   const senderName=String(packet.senderName||'PLAYER').replace(/[<>]/g,'').trim().slice(0,16)||'PLAYER';
   if(packet.kind==='emote'&&Object.prototype.hasOwnProperty.call(ROOM_CHAT_EMOTES,packet.emoteId))return{type:'room-chat',kind:'emote',emoteId:packet.emoteId,senderName,character,at:Number(packet.at)||Date.now()};
   if(packet.kind==='text'){
@@ -5516,7 +5643,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(!isHost)return;
   const now=Date.now(),last=roomChatRate.get(senderId)||0;if(now-last<500)return;roomChatRate.set(senderId,now);
   const player=players.find(p=>p.id===senderId);if(!player)return;
-  const base={type:'room-chat',senderName:String(player.name||'PLAYER').replace(/[<>]/g,'').slice(0,16),character:['ice','rage','gugu','veil'].includes(player.character)?player.character:'ice',kind,at:now};
+  const base={type:'room-chat',senderName:String(player.name||'PLAYER').replace(/[<>]/g,'').slice(0,16),character:['ice','rage','gugu','veil','su'].includes(player.character)?player.character:'ice',kind,at:now};
   let packet=null;
   if(kind==='text'){
    const message=String(value||'').replace(/[\u0000-\u001f]/g,' ').trim().slice(0,120);
@@ -5562,7 +5689,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(players.some(p=>p.id===conn.peer))return;
     if(players.length>=4){try{conn.send({type:'reject',message:'방 인원이 가득 찼습니다.'});}catch(e){}conn.close();return;}
     const name=String(packet.name||'PLAYER').replace(/[<>]/g,'').slice(0,16)||'PLAYER';
-    const character=['ice','rage','gugu','veil'].includes(packet.character)?packet.character:'ice';
+    const character=['ice','rage','gugu','veil','su'].includes(packet.character)?packet.character:'ice';
     players.push({id:conn.peer,name,character,ready:false,host:false});
     updatePlayersUI();broadcastState();toast(name+' 님이 입장했어요!');
     if(roomChatHistory.length){try{conn.send({type:'room-chat-history',items:roomChatHistory.slice(-30)});}catch(_){}}
@@ -5573,7 +5700,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    }else if(packet.type==='ready'){
     const p=players.find(x=>x.id===conn.peer);if(p){p.ready=!!packet.ready;updatePlayersUI();broadcastState();}
    }else if(packet.type==='profile'){
-    const p=players.find(x=>x.id===conn.peer);if(p){p.name=String(packet.name||p.name).replace(/[<>]/g,'').slice(0,16);p.character=['ice','rage','gugu','veil'].includes(packet.character)?packet.character:'ice';p.ready=false;updatePlayersUI();broadcastState();}
+    const p=players.find(x=>x.id===conn.peer);if(p){p.name=String(packet.name||p.name).replace(/[<>]/g,'').slice(0,16);p.character=['ice','rage','gugu','veil','su'].includes(packet.character)?packet.character:'ice';p.ready=false;updatePlayersUI();broadcastState();}
    }else if(packet.type==='audio-ready'){
     if(pendingStart&&Number(packet.chartSeed)===pendingStart.seed&&pendingStart.expected.has(conn.peer)){
      pendingStart.ready.add(conn.peer);updatePendingStartProgress();maybeFinishPendingStart();
@@ -5605,7 +5732,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   players=packet.players.slice(0,4).map((p,i)=>({
    id:String(p.id)===selfPeerId?'local':String(p.id||i),
    name:String(p.name||('PLAYER '+(i+1))).slice(0,16),
-   character:['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice',ready:!!p.ready,host:!!p.host
+   character:['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice',ready:!!p.ready,host:!!p.host
   }));
   players.sort((a,b)=>(a.id==='local'?-1:b.id==='local'?1:(a.host?-1:b.host?1:0)));
   const mine=localPlayer();if(mine)selectedChar=mine.character;
@@ -5631,7 +5758,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   stopPracticeBots();
   const chart=window.BeatBloomGame?.getChartEvents?.()||[];
   botStates=players.filter(p=>p.bot).map((p,index)=>({
-   id:p.id,name:p.name,character:['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice',score:0,combo:0,maxCombo:0,
+   id:p.id,name:p.name,character:['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice',score:0,combo:0,maxCombo:0,
    perfectCount:0,eventIndex:0,seed:index,penaltyBeats:0
   }));
   updateOpponentStrip();
@@ -5650,7 +5777,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       const hardPure=selectedDifficulty==='hard';
       const underPenalty=!hardPure&&bot.penaltyBeats>0;
       const accuracy=underPenalty
-       ? (bot.penaltyType==='rage'?(roll<.28?1:(roll<.62?.86:.55)):(bot.penaltyType==='veil'?(roll<.38?1:(roll<.70?.86:.60)):(roll<.42?1:(roll<.76?.86:.68))))
+       ? (bot.penaltyType==='rage'?(roll<.28?1:(roll<.62?.86:.55)):(bot.penaltyType==='veil'?(roll<.38?1:(roll<.70?.86:.60)):(bot.penaltyType==='su'?(roll<.34?1:(roll<.72?.84:.58)):(roll<.42?1:(roll<.76?.86:.68)))))
        : (roll<.72?1:(roll<.93?.86:.72));
       if(accuracy===1){
        bot.combo++;bot.perfectCount++;
@@ -5661,7 +5788,7 @@ document.addEventListener('DOMContentLoaded',()=>{
          // Gugu is passive-only: never route its skill meter to the ICE fallback.
          bot.goldenRhythmActivations=(bot.goldenRhythmActivations||0)+1;
          showSkillFeedback('🍂 '+bot.name+' · 황금 리듬! PERFECT ×1.5 · MISS 감점 ×2');
-        }else if(bot.character==='ice'||bot.character==='rage'||bot.character==='veil'){
+        }else if(bot.character==='ice'||bot.character==='rage'||bot.character==='veil'||bot.character==='su'){
          applyIncomingSkill({character:bot.character,fromName:bot.name});
         }
        }
@@ -5710,7 +5837,7 @@ document.addEventListener('DOMContentLoaded',()=>{
      head.append(tag,name);
      const body=makeEl('div','bb-side-player-body');
      const avatar=makeEl('div','bb-side-player-avatar');avatar.dataset.character=p.character||'ice';
-     const image=document.createElement('img');image.src=CHAR_IMAGES[['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice'];image.alt=charName(p.character);image.loading='eager';image.dataset.character=p.character||'ice';avatar.append(image);
+     const image=document.createElement('img');image.src=CHAR_IMAGES[['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice'];image.alt=charName(p.character);image.loading='eager';image.dataset.character=p.character||'ice';avatar.append(image);
      const meta=makeEl('div','bb-side-player-meta');
      const character=makeEl('span','bb-side-player-character',charName(p.character));
      const scoreLabel=makeEl('small','','SCORE');
@@ -5737,7 +5864,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    if(scoreEl)scoreEl.textContent=scoreText(score);
    if(comboEl)comboEl.textContent=String(combo)+' COMBO';
    if(charEl)charEl.textContent=charName(p.character);
-   const imageSrc=CHAR_IMAGES[['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice'];
+   const imageSrc=CHAR_IMAGES[['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice'];
    const avatarBox=card.querySelector('.bb-side-player-avatar');
    if(avatarBox)avatarBox.dataset.character=p.character||'ice';
    if(img){img.dataset.character=p.character||'ice';if(img.getAttribute('src')!==imageSrc){img.src=imageSrc;img.alt=charName(p.character);}}
@@ -5783,7 +5910,7 @@ document.addEventListener('DOMContentLoaded',()=>{
    const bot=botStates.find(x=>x.id===p.id);
    return {
     id:String(p.id),name:String(p.name||('PLAYER '+(index+1))).replace(/[<>]/g,'').slice(0,16),
-    character:['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice',
+    character:['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice',
     score:isLocal?Number(localResult?.score??p.score??0):Number(bot?.score??p.score??0),
     combo:isLocal?Number(localResult?.maxCombo??localResult?.combo??0):Number(bot?.maxCombo??p.combo??0),
     accuracy:isLocal?Number(localResult?.accuracy??100):Number(p.accuracy??0),
@@ -5951,7 +6078,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const selfPortrait=makeEl('div','bb-self-portrait');
   const selfAvatarNode=$('player-avatar-box');
   if(selfAvatarNode){selfAvatarNode.classList.add('bb-self-avatar-content');selfPortrait.append(selfAvatarNode);}
-  else{const selfImage=document.createElement('img');selfImage.src=CHAR_IMAGES[['ice','rage','gugu','veil'].includes(localEntry.character)?localEntry.character:'ice'];selfImage.alt=charName(localEntry.character);selfImage.loading='eager';selfPortrait.append(selfImage);}
+  else{const selfImage=document.createElement('img');selfImage.src=CHAR_IMAGES[['ice','rage','gugu','veil','su'].includes(localEntry.character)?localEntry.character:'ice'];selfImage.alt=charName(localEntry.character);selfImage.loading='eager';selfPortrait.append(selfImage);}
   const selfNick=makeEl('strong','bb-self-nick',localEntry.name||getNick());
   const selfCharacter=makeEl('span','bb-self-character',charName(localEntry.character));
   const selfStats=makeEl('div','bb-self-stats');
@@ -6521,7 +6648,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  $('bb-quiz-correct-title')?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();$('bb-quiz-guess')?.focus();}});
 
  // MUSIC PARTY v16 — independent PeerJS room, external DJ audio, synchronized answers/scores.
- const MP_CHARACTERS={ice:{name:'제갱',image:'a/68.webp'},rage:{name:'프란',image:'a/69.webp'},gugu:{name:'구구',image:'a/gugu_fullbody.webp'},veil:{name:'스트',image:'a/67.webp'}};
+ const MP_CHARACTERS={ice:{name:'제갱',image:'a/68.webp'},rage:{name:'프란',image:'a/69.webp'},gugu:{name:'구구',image:'a/gugu_fullbody.webp'},veil:{name:'스트',image:'a/67.webp'},su:{name:'수',image:'a/su_character.webp'}};
  const mpIsHost=()=>musicParty.isHost;
  const mpLocalId=()=>musicParty.isHost?'local':(musicParty.peer?.id||'');
  const mpPeerId=code=>'beatbloom-mp-'+code;
@@ -6914,6 +7041,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  $('bb-char-rage').addEventListener('click',()=>{selectedChar='rage';updateLocalProfile();showWaiting();});
   $('bb-char-gugu').addEventListener('click',()=>{selectedChar='gugu';updateLocalProfile();showWaiting();});
  $('bb-char-veil').addEventListener('click',()=>{selectedChar='veil';updateLocalProfile();showWaiting();});
+ $('bb-char-su').addEventListener('click',()=>{selectedChar='su';updateLocalProfile();showWaiting();});
  $('bb-char-back').addEventListener('click',showWaiting);
  $('bb-pick-song').addEventListener('click',()=>{if(!isHost){toast('방장만 노래를 변경할 수 있어요.');return;}pendingSong=selectedSong;renderMusicDetail();showScene('bb-music');});
  $('bb-music-back').addEventListener('click',()=>playMode==='practice'?showScene('bb-home'):showWaiting());
@@ -6972,14 +7100,14 @@ document.addEventListener('DOMContentLoaded',()=>{
  document.querySelectorAll('#bb-practice-bots [data-bot-count]').forEach(btn=>btn.addEventListener('click',()=>{practiceBotCount=Math.max(0,Math.min(3,Number(btn.dataset.botCount)||0));renderMusicDetail();toast(practiceBotCount?`연습 봇 ${practiceBotCount}명 추가`:'혼자 연습하기');}));
 
  document.querySelectorAll('#bb-practice-character-picker [data-practice-player-char]').forEach(btn=>btn.addEventListener('click',()=>{
-  selectedChar=['ice','rage','gugu','veil'].includes(btn.dataset.practicePlayerChar)?btn.dataset.practicePlayerChar:'ice';
+  selectedChar=['ice','rage','gugu','veil','su'].includes(btn.dataset.practicePlayerChar)?btn.dataset.practicePlayerChar:'ice';
   const selector=document.querySelector(`#player-char-selector [data-char="${selectedChar}"]`);
   if(selector)selector.click();
   document.querySelectorAll('#bb-practice-character-picker [data-practice-player-char]').forEach(x=>{const selected=x===btn;x.classList.toggle('selected',selected);x.setAttribute('aria-pressed',String(selected));});
  }));
  document.querySelectorAll('#bb-practice-bots [data-practice-bot-index][data-practice-bot-char]').forEach(btn=>btn.addEventListener('click',()=>{
   const index=Math.max(0,Math.min(2,Number(btn.dataset.practiceBotIndex)||0));
-  const character=['ice','rage','gugu','veil'].includes(btn.dataset.practiceBotChar)?btn.dataset.practiceBotChar:'rage';
+  const character=['ice','rage','gugu','veil','su'].includes(btn.dataset.practiceBotChar)?btn.dataset.practiceBotChar:'rage';
   practiceBotChars[index]=character;
   document.querySelectorAll(`#bb-practice-bots [data-practice-bot-index="${index}"]`).forEach(x=>x.classList.toggle('selected',x===btn));
  }));
@@ -7014,7 +7142,7 @@ document.addEventListener('DOMContentLoaded',()=>{
  renderMusicDetail();updatePlayersUI();startLoadingSequence();
  window.BeatBloomRoom={
   setRoomId(id){if(/^\d{5}$/.test(String(id))){roomId=String(id);updatePlayersUI();}},
-  setPlayers(list){if(!Array.isArray(list))return;players=list.slice(0,4).map((p,i)=>({id:String(p.id??i),name:String(p.name??('PLAYER '+(i+1))).slice(0,16),character:['ice','rage','gugu','veil'].includes(p.character)?p.character:'ice',ready:!!p.ready,host:!!p.host}));players.sort((a,b)=>(a.id==='local'?-1:b.id==='local'?1:0));updatePlayersUI();},
+  setPlayers(list){if(!Array.isArray(list))return;players=list.slice(0,4).map((p,i)=>({id:String(p.id??i),name:String(p.name??('PLAYER '+(i+1))).slice(0,16),character:['ice','rage','gugu','veil','su'].includes(p.character)?p.character:'ice',ready:!!p.ready,host:!!p.host}));players.sort((a,b)=>(a.id==='local'?-1:b.id==='local'?1:0));updatePlayersUI();},
   setSong(index){if(Number.isInteger(index)&&index>=0&&index<music.length){selectedSong=index;updatePlayersUI();if(isHost)broadcastState();}},
   getState(){return{roomId,isHost,selectedChar,selectedSong,selectedLaneCount,players:players.map(p=>({...p})),connected:!!peer};}
  };
@@ -10538,7 +10666,7 @@ body.bb-nickname-active #bb-open-audio-settings{right:max(112px,calc(env(safe-ar
 /* Make the note heads slimmer without changing note timing or judgement. */
 </style>
 
-<style id="bb-v43-tapered-gradient-highway">
+<style id="bb-v44-su-character-skill">
 /* v43: Strong perspective taper + vertical transparency fade, mobile landscape only.
    Keep the hit pads full-size so lane input and judgement timing are untouched. */
 @media (pointer:coarse) and (orientation:landscape) and (max-height:650px){
